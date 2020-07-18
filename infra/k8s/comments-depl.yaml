@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comments-depl
+spec:
+  replicas: 1 # number of copies of the pod
+  selector: # how to find the pods for the deployment
+    matchLabels:
+      app: comments
+  template: # how we build the pods
+    metadata:
+      labels:
+        app: comments # name of the pod
+    spec:
+      containers:
+        - name: comments
+          image: gcapu/comments
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: comments-srv
+spec:
+  selector:
+    app: comments
+  ports:
+    - name: comments
+      protocol: TCP
+      port: 4001
+      targetPort: 4001

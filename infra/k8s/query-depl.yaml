@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: query-depl
+spec:
+  replicas: 1 # number of copies of the pod
+  selector: # how to find the pods for the deployment
+    matchLabels:
+      app: query
+  template: # how we build the pods
+    metadata:
+      labels:
+        app: query # name of the pod
+    spec:
+      containers:
+        - name: query
+          image: gcapu/query
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: query-srv
+spec:
+  selector:
+    app: query
+  ports:
+    - name: query
+      protocol: TCP
+      port: 4002
+      targetPort: 4002

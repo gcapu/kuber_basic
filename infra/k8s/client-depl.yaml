@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-depl
+spec:
+  replicas: 1 # number of copies of the pod
+  selector: # how to find the pods for the deployment
+    matchLabels:
+      app: client
+  template: # how we build the pods
+    metadata:
+      labels:
+        app: client # name of the pod
+    spec:
+      containers:
+        - name: client
+          image: gcapu/client
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-srv
+spec:
+  selector:
+    app: client
+  ports:
+    - name: client
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

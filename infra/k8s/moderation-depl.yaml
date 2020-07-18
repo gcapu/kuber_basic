@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moderation-depl
+spec:
+  replicas: 1 # number of copies of the pod
+  selector: # how to find the pods for the deployment
+    matchLabels:
+      app: moderation
+  template: # how we build the pods
+    metadata:
+      labels:
+        app: moderation # name of the pod
+    spec:
+      containers:
+        - name: moderation
+          image: gcapu/moderation
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: moderation-srv
+spec:
+  selector:
+    app: moderation
+  ports:
+    - name: moderation
+      protocol: TCP
+      port: 4003
+      targetPort: 4003
